@@ -1,7 +1,7 @@
 'strict'
 const socket = io();
 
-let plot = document.getElementById('tester');
+let plot = document.getElementById('plot');
 
 socket.on('initial_data', (initial_data) => {
   console.log(initial_data);

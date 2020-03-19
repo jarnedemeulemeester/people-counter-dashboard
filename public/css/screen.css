@@ -6,10 +6,118 @@
     src: url("/fonts/Inter.var.woff2") format("woff2");
   }
 
-html {
-    font-family: "Inter var experimental", sans-serif;
+* {
+  box-sizing: border-box;
 }
 
+html {
+  font-family: "Inter var experimental", sans-serif;
+}
+
+body {
+  padding: 60px 0;
+  height: 100vh;
+}
+
+.o-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 2px solid #EBEBEB;
+  width: 130px;
+  height: 100%;
+}
+
+.menu-title {
+  margin: 0;
+  margin-bottom: 100px;
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 56px;
+  width: 100%;
+  margin-right: -4px;
+  margin-bottom: 24px;
+}
+
+.menu-item-selected {
+  border-right: 2px solid #0500FF;
+  fill: #0500FF;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
+  flex: 1;
+}
+
+.main-title {
+  margin: 0;
+  margin-bottom: 63px;
+  font-size: 72px;
+  font-weight: 600;
+  color: #E5E5E5;
+}
+
+.cards {
+  display: flex;
+  margin-bottom: 60px;
+}
+
+.card {
+  padding: 24px;
+  margin-right: 24px;
+  width: 210px;
+  height: 150px;
+  background-color: #F5F5F5;
+  border-radius: 30px;
+}
+
+.card-selected {
+  background-color: #7D7AFA;
+  color: #FFFFFF;
+}
+
+.card-location {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.card-number {
+  font-size: 48px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.card-unit {
+  font-size: 14px;
+  margin: 0;
+}
+
+.chart-container {
+
+}
+
+.chart-title {
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 24px;
+}
 .chart {
-  width: 80vw;
+  width: 100%;
 }
