@@ -2,6 +2,26 @@
 const socket = io();
 
 let plot = document.getElementById('plot');
+let location_data;
+
+function createCard(location_data_item, is_selected) {
+  let card = document.createElement('div');
+  card.classList.add('card');
+  (is_selected) ? card.classList.add('card-selected'):null;
+  let card_location = document.createElement('h3');
+  card_location.classList.add('card-location');
+  card_location.innerText = location_data_item.fullname
+  let card_number = document.createElement('p');
+  card_number.classList.add('card-number');
+  card_number.innerText = location_data_item.count;
+  let card_unit = document.createElement('p');
+  card_unit.classList.add('card-unit');
+  card_unit.innerText = 'People inside';
+  card.append(card_location);
+  card.append(card_number);
+  card.append(card_unit);
+  return card;
+}
 
 socket.on('initial_data', (initial_data) => {
   console.log(initial_data);
@@ -38,6 +58,19 @@ socket.on('initial_data', (initial_data) => {
     displayModeBar: false
   });
 
+});
+
+socket.on('initial_location_data', (initial_data) => {
+  console.log(initial_data);
+  location_data = initial_data;
+  for (let i = 0; i < location_data.length; i++) {
+    let card = (i !== 0) ? createCard(location_data[i], false):createCard(location_data[i], true);
+    document.querySelector('.js-cards').append(card);
+  }
+})
+
+socket.on('updated_location_data', (updated_data) => {
+  console.log(updated_data);
 });
 
 socket.on('updated_data', (updated_data) => {
