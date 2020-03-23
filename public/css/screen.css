@@ -84,6 +84,7 @@ body {
   height: 150px;
   background-color: #F5F5F5;
   border-radius: 30px;
+  cursor: pointer;
 }
 
 .card-selected {

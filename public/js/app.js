@@ -7,10 +7,11 @@ let location_data;
 function createCard(location_data_item, is_selected) {
   let card = document.createElement('div');
   card.classList.add('card');
+  card.classList.add('js-card');
   (is_selected) ? card.classList.add('card-selected'):null;
   let card_location = document.createElement('h3');
   card_location.classList.add('card-location');
-  card_location.innerText = location_data_item.fullname
+  card_location.innerText = location_data_item.fullname;
   let card_number = document.createElement('p');
   card_number.classList.add('card-number');
   card_number.innerText = location_data_item.count;
@@ -20,6 +21,12 @@ function createCard(location_data_item, is_selected) {
   card.append(card_location);
   card.append(card_number);
   card.append(card_unit);
+  card.setAttribute('name', location_data_item.name);
+  card.addEventListener('click', () => {
+    document.querySelector('.card-selected').classList.remove('card-selected');
+    document.querySelector('.js-chart-title').innerText = location_data_item.fullname;
+    card.classList.add('card-selected');
+  });
   return card;
 }
 
@@ -63,8 +70,16 @@ socket.on('initial_data', (initial_data) => {
 socket.on('initial_location_data', (initial_data) => {
   console.log(initial_data);
   location_data = initial_data;
+  document.querySelector('.js-cards').innerHTML = null;
+  let card;
   for (let i = 0; i < location_data.length; i++) {
-    let card = (i !== 0) ? createCard(location_data[i], false):createCard(location_data[i], true);
+    if (i !== 0) {
+      card = createCard(location_data[i], false);
+    } else {
+      card = createCard(location_data[i], true);
+      document.querySelector('.js-chart-title').innerText = location_data[i].fullname;
+      // createChart(location_data[i]);
+    }
     document.querySelector('.js-cards').append(card);
   }
 })
