@@ -1,4 +1,4 @@
-'strict'
+'use strict'
 const socket = io();
 
 let plot = document.getElementById('plot');
@@ -43,7 +43,6 @@ socket.on('initial_data', (initial_data) => {
       y: Math.round(_.meanBy(n, k => k.People))
     })
   )
-  console.log(historyData);
   historyData.forEach(element => {
     labels.push(new Date(element.x));
     people_inside.push(element.y);
