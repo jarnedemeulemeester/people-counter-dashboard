@@ -19,6 +19,13 @@ body {
   height: 100vh;
 }
 
+input {
+  border: none;
+  border-radius: 10px;
+  background-color: #F5F5F5;
+  padding: 5px;
+}
+
 .o-container {
   display: flex;
   flex-direction: row;
@@ -53,8 +60,8 @@ body {
 }
 
 .menu-item-selected {
-  border-right: 2px solid #0500FF;
-  fill: #0500FF;
+  border-right: 2px solid #7D7AFA;
+  fill: #7D7AFA;
 }
 
 .main {
@@ -111,6 +118,11 @@ body {
 
 .chart-container {
 
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .chart-title {

@@ -8,7 +8,7 @@ function createCard(location_data_item, is_selected) {
   let card = document.createElement('div');
   card.classList.add('card');
   card.classList.add('js-card');
-  (is_selected) ? card.classList.add('card-selected'):null;
+  (is_selected) ? card.classList.add('card-selected') : null;
   let card_location = document.createElement('h3');
   card_location.classList.add('card-location');
   card_location.innerText = location_data_item.fullname;
@@ -31,21 +31,31 @@ function createCard(location_data_item, is_selected) {
 }
 
 socket.on('initial_data', (initial_data) => {
-  console.log(initial_data);
-
   let labels = Array();
   let people_inside = Array();
-  initial_data.forEach(element => {
-    labels.push(new Date(element.TimeStamp));
-    people_inside.push(element.People);
+  let historyData = Array();
+  let groupedResults = _.groupBy(initial_data, result => {
+    return moment.unix(new Date(result.TimeStamp).getTime() / 1000).startOf('hour')
   });
-  
-  
+  _.forEach(groupedResults, (n, key) =>
+    historyData.push({
+      x: key,
+      y: Math.round(_.meanBy(n, k => k.People))
+    })
+  )
+  console.log(historyData);
+  historyData.forEach(element => {
+    labels.push(new Date(element.x));
+    people_inside.push(element.y);
+  });
 
   let data = [
     {
       name: 'People inside',
-      type: 'scatter',
+      type: 'bar',
+      marker: {
+        color: '#7D7AFA'
+      },
       x: labels,
       y: people_inside
     }
@@ -68,7 +78,6 @@ socket.on('initial_data', (initial_data) => {
 });
 
 socket.on('initial_location_data', (initial_data) => {
-  console.log(initial_data);
   location_data = initial_data;
   document.querySelector('.js-cards').innerHTML = null;
   let card;
@@ -89,8 +98,7 @@ socket.on('updated_location_data', (updated_data) => {
 });
 
 socket.on('updated_data', (updated_data) => {
-  console.log(updated_data);
   let label = new Date(updated_data.TimeStamp);
   let data = updated_data.People;
-  Plotly.extendTraces(plot, {x: [[label]], y: [[data]]}, [0])
+  Plotly.extendTraces(plot, { x: [[label]], y: [[data]] }, [0])
 });

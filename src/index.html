@@ -7,6 +7,8 @@
   <title>People counter</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/screen.css">
+  <script src="/js/moment.js"></script>
+  <script src="/js/lodash.js"></script>
   <script src="/js/plotly-latest.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
@@ -40,7 +42,13 @@
         </div>
       </div>
       <div class="chart-container">
-        <h3 class="chart-title js-chart-title">------</h3>
+        <div class="chart-header">
+          <h3 class="chart-title js-chart-title">------</h3>
+          <div class="filter">
+            <input type="datetime-local" name="start-time" id="start-time"> -
+            <input type="datetime-local" name="end-time" id="end-time">
+          </div>
+        </div>
         <div id="plot" class="chart"></div>
       </div>
     </main>
