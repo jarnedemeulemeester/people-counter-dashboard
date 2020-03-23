@@ -30,23 +30,24 @@ function createCard(location_data_item, is_selected) {
   return card;
 }
 
-socket.on('initial_data', (initial_data) => {
+function groupData(data) {
   let labels = Array();
   let people_inside = Array();
-  let historyData = Array();
-  let groupedResults = _.groupBy(initial_data, result => {
+
+  let groupedResults = _.groupBy(data, result => {
     return moment.unix(new Date(result.TimeStamp).getTime() / 1000).startOf('hour')
   });
-  _.forEach(groupedResults, (n, key) =>
-    historyData.push({
-      x: key,
-      y: Math.round(_.meanBy(n, k => k.People))
-    })
-  )
-  historyData.forEach(element => {
-    labels.push(new Date(element.x));
-    people_inside.push(element.y);
+
+  _.forEach(groupedResults, (n, key) => {
+    labels.push(new Date(key));
+    people_inside.push(Math.round(_.meanBy(n, k => k.People)));
   });
+  
+  return [labels, people_inside];
+}
+
+socket.on('initial_data', (initial_data) => {
+  let [labels, people_inside] = groupData(initial_data);
 
   let data = [
     {
@@ -59,6 +60,7 @@ socket.on('initial_data', (initial_data) => {
       y: people_inside
     }
   ];
+
   Plotly.newPlot(plot, data, {
     margin: {
       t: 0
