@@ -99,7 +99,12 @@ socket.on('initial_location_data', (initial_data) => {
 })
 
 socket.on('updated_location_data', (updated_data) => {
-  console.log(updated_data);
+  let cards = document.querySelectorAll('.js-card');
+  for (let i = 0; i < cards.length; i++) {
+    if (cards[i].getAttribute('name') === updated_data.name){
+      cards[i].querySelector('.card-number').innerText = updated_data.count;
+    }
+  }
 });
 
 socket.on('updated_data', (updated_data) => {
