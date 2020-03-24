@@ -19,7 +19,7 @@ body {
   height: 100vh;
 }
 
-input {
+input, select {
   border: none;
   border-radius: 10px;
   background-color: #F5F5F5;
@@ -131,6 +131,11 @@ input {
   margin: 0;
   margin-bottom: 24px;
 }
+
+.filter-group-by {
+  margin-right: 5px;
+}
+
 .chart {
   width: 100%;
 }

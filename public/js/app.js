@@ -3,6 +3,7 @@ const socket = io();
 
 let plot = document.getElementById('plot');
 let location_data;
+let raw_data;
 
 function createCard(location_data_item, is_selected) {
   let card = document.createElement('div');
@@ -30,12 +31,12 @@ function createCard(location_data_item, is_selected) {
   return card;
 }
 
-function groupData(data) {
+function groupData(data, group_by) {
   let labels = Array();
   let people_inside = Array();
 
   let groupedResults = _.groupBy(data, result => {
-    return moment.unix(new Date(result.TimeStamp).getTime() / 1000).startOf('hour')
+    return moment.unix(new Date(result.TimeStamp).getTime() / 1000).startOf(group_by);
   });
 
   _.forEach(groupedResults, (n, key) => {
@@ -46,9 +47,7 @@ function groupData(data) {
   return [labels, people_inside];
 }
 
-socket.on('initial_data', (initial_data) => {
-  let [labels, people_inside] = groupData(initial_data);
-
+function createChart(labels, people_inside) {
   let data = [
     {
       name: 'People inside',
@@ -75,7 +74,12 @@ socket.on('initial_data', (initial_data) => {
     staticPlot: false,
     displayModeBar: false
   });
+}
 
+socket.on('initial_data', (initial_data) => {
+  raw_data = initial_data;
+  let [labels, people_inside] = groupData(initial_data, 'hour');
+  createChart(labels, people_inside);
 });
 
 socket.on('initial_location_data', (initial_data) => {
@@ -102,4 +106,9 @@ socket.on('updated_data', (updated_data) => {
   let label = new Date(updated_data.TimeStamp);
   let data = updated_data.People;
   Plotly.extendTraces(plot, { x: [[label]], y: [[data]] }, [0])
+});
+
+document.querySelector('.js-filter-group-by').addEventListener('change', e => {
+  let [labels, people_inside] = groupData(raw_data, e.target.value);
+  createChart(labels, people_inside);
 });

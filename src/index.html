@@ -45,6 +45,13 @@
         <div class="chart-header">
           <h3 class="chart-title js-chart-title">------</h3>
           <div class="filter">
+            <select class="filter-group-by js-filter-group-by" name="group-by" id="group-by">
+              <option value="hour">Hourly</option>
+              <option value="day">Daily</option>
+              <option value="week">Weekly</option>
+              <option value="month">Monthly</option>
+              <option value="year">Yearly</option>
+            </select>
             <input type="datetime-local" name="start-time" id="start-time"> -
             <input type="datetime-local" name="end-time" id="end-time">
           </div>
