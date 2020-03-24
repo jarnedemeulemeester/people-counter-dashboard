@@ -139,3 +139,11 @@ input, select {
 .chart {
   width: 100%;
 }
+
+/* Settings */
+
+.location-settings {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) 200px; 
+  gap: 10px;
+}

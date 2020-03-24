@@ -64,6 +64,32 @@ io.on('connection', (socket) => {
       socket.emit('initial_data', array);
     });
   });
+
+  socket.on('get_new_chart_data', data => {
+    r.table(data.location).orderBy('TimeStamp').run(rdbconn, (err, cursor) => {
+      if (err) throw err;
+      cursor.toArray((err, array) => {
+        if (err) throw err;
+        socket.emit('initial_data', array);
+      });
+    });
+  });
+
+  socket.on('get-location-settings', () => {
+    r.table('device').eqJoin('location', r.table('location')).run(rdbconn, (err, cursor) => {
+      if (err) throw err;
+      cursor.toArray((err, array) => {
+        if (err) throw err;
+        socket.emit('location-settings', array);
+      });
+    });
+  });
+
+  socket.on('device_location_changed', data => {
+    r.table('device').get(data.deviceId).update({location: data.locationId}).run(rdbconn, err => {
+      if (err) throw err;
+    });
+  });
 });
 
 app.use((req, res, next) => {
@@ -75,6 +101,10 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/src/index.html');
+});
+
+app.get('/settings', (req, res) => {
+  res.sendFile(__dirname + '/src/settings.html');
 });
 
 http.listen(3000, err => {

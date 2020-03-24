@@ -27,6 +27,7 @@ function createCard(location_data_item, is_selected) {
     document.querySelector('.card-selected').classList.remove('card-selected');
     document.querySelector('.js-chart-title').innerText = location_data_item.fullname;
     card.classList.add('card-selected');
+    socket.emit('get_new_chart_data', {location: location_data_item.name});
   });
   return card;
 }
