@@ -37,12 +37,12 @@ function groupData(data, group_by) {
   let people_inside = Array();
 
   let groupedResults = _.groupBy(data, result => {
-    return moment.unix(new Date(result.TimeStamp).getTime() / 1000).startOf(group_by);
+    return moment.unix(new Date(result.timestamp).getTime() / 1000).startOf(group_by);
   });
 
   _.forEach(groupedResults, (n, key) => {
     labels.push(new Date(key));
-    people_inside.push(Math.round(_.meanBy(n, k => k.People)));
+    people_inside.push(Math.round(_.meanBy(n, k => k.people)));
   });
   
   return [labels, people_inside];
@@ -109,8 +109,8 @@ socket.on('updated_location_data', (updated_data) => {
 });
 
 socket.on('updated_data', (updated_data) => {
-  let label = new Date(updated_data.TimeStamp);
-  let data = updated_data.People;
+  let label = new Date(updated_data.timestamp);
+  let data = updated_data.people;
   Plotly.extendTraces(plot, { x: [[label]], y: [[data]] }, [0])
 });
 

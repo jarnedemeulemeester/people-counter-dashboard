@@ -9,7 +9,7 @@ let rdbconn = null
 r.connect({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  db: 'person-counter'
+  db: 'people-counter'
 }, (err, conn) => {
   if (err) throw err;
   rdbconn = conn;
@@ -28,7 +28,7 @@ function getLocationData() {
 }
 
 function getData() {
-  r.table('The_Core').changes().filter({old_val: null})('new_val').run(rdbconn, (err, cursor) => {
+  r.table('the_core').changes().filter({old_val: null})('new_val').run(rdbconn, (err, cursor) => {
     if (err) throw err;
     cursor.each((err, row) => {
       if (err) throw err;
@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
   // filter_date.setHours(filter_date.getHours() - 12);
   // filter_date.setMinutes(filter_date.getMinutes() - 5);
   // r.table('The_Core').filter(r.row('TimeStamp').ge(filter_date)).orderBy('TimeStamp').run(rdbconn, (err, cursor) => {
-  r.table('The_Core').orderBy('TimeStamp').run(rdbconn, (err, cursor) => {
+  r.table('the_core').orderBy('timestamp').run(rdbconn, (err, cursor) => {
     if (err) throw err;
     cursor.toArray((err, array) => {
       if (err) throw err;
@@ -66,7 +66,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('get_new_chart_data', data => {
-    r.table(data.location).orderBy('TimeStamp').run(rdbconn, (err, cursor) => {
+    r.table(data.location).orderBy('timestamp').run(rdbconn, (err, cursor) => {
       if (err) throw err;
       cursor.toArray((err, array) => {
         if (err) throw err;
