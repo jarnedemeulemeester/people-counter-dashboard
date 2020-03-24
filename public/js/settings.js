@@ -28,7 +28,12 @@ socket.on('location-settings', data => {
     data.forEach(element => {
         let name = document.createElement('p');
         name.innerText = element.left.name;
-        let select = createSelect(element.left.id, element.right.id);
+        let select;
+        if (element.right) {
+            select = createSelect(element.left.id, element.right.id);
+        } else {
+            select = createSelect(element.left.id, null);
+        }
         document.querySelector('.js-location-settings').append(name, select);
     });
 })

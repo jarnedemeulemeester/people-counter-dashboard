@@ -28,7 +28,7 @@ function getLocationData() {
 }
 
 function getData() {
-  r.table('the_core').changes().filter({old_val: null})('new_val').run(rdbconn, (err, cursor) => {
+  r.table('the_core').changes().filter({ old_val: null })('new_val').run(rdbconn, (err, cursor) => {
     if (err) throw err;
     cursor.each((err, row) => {
       if (err) throw err;
@@ -76,17 +76,30 @@ io.on('connection', (socket) => {
   });
 
   socket.on('get-location-settings', () => {
+    let joined_data = Array();
     r.table('device').eqJoin('location', r.table('location')).run(rdbconn, (err, cursor) => {
       if (err) throw err;
       cursor.toArray((err, array) => {
         if (err) throw err;
-        socket.emit('location-settings', array);
+        joined_data = array;
+        r.table('device').run(rdbconn, (err, cursor) => {
+          if (err) throw err;
+          cursor.toArray((err, array) => {
+            if (err) throw err;
+            array.forEach(element => {
+              if (!element.location) {
+                joined_data.push({left: element});
+              }
+            });
+            socket.emit('location-settings', joined_data);
+          });
+        });
       });
     });
   });
 
   socket.on('device_location_changed', data => {
-    r.table('device').get(data.deviceId).update({location: data.locationId}).run(rdbconn, err => {
+    r.table('device').get(data.deviceId).update({ location: data.locationId }).run(rdbconn, err => {
       if (err) throw err;
     });
   });

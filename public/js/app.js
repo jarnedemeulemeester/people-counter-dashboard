@@ -15,7 +15,7 @@ function createCard(location_data_item, is_selected) {
   card_location.innerText = location_data_item.fullname;
   let card_number = document.createElement('p');
   card_number.classList.add('card-number');
-  card_number.innerText = location_data_item.count;
+  card_number.innerText = location_data_item.people;
   let card_unit = document.createElement('p');
   card_unit.classList.add('card-unit');
   card_unit.innerText = 'People inside';
@@ -103,7 +103,7 @@ socket.on('updated_location_data', (updated_data) => {
   let cards = document.querySelectorAll('.js-card');
   for (let i = 0; i < cards.length; i++) {
     if (cards[i].getAttribute('name') === updated_data.name){
-      cards[i].querySelector('.card-number').innerText = updated_data.count;
+      cards[i].querySelector('.card-number').innerText = updated_data.people;
     }
   }
 });
