@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  nsdb:
+    image: weareradicalbit/nsdb:1.0.0
+    container_name: pc-nsdb
+    environment: 
+      NODE_HOSTNAME: 127.0.0.1
+    ports:
+      - "9100:9000"
+  
+  redis:
+    image: redis:6.0-alpine
+    container_name: pc-redis
+    ports:
+      - "9101:6379"
