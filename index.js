@@ -13,9 +13,28 @@ r.connect({
 }, (err, conn) => {
   if (err) throw err;
   rdbconn = conn;
+  checkDatabase();
   getLocationData();
   getData();
 })
+
+function checkDatabase() {
+  r.tableList().run(rdbconn, (err, result) => {
+    if (err) throw err;
+    if (!result.includes('location')) {
+      r.tableCreate('location').run(rdbconn, (err, result) => {
+        if (err) throw err;
+        console.log('Table \'location\' created');
+      });
+    }
+    if (!result.includes('device')) {
+      r.tableCreate('device').run(rdbconn, (err, result) => {
+        if (err) throw err;
+        console.log('Table \'device\' created');
+      });
+    }
+  });
+}
 
 function getLocationData() {
   r.table('location').changes()('new_val').run(rdbconn, (err, cursor) => {
