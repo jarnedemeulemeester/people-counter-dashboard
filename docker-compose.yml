@@ -1,0 +1,14 @@
+version: '3'
+
+services: 
+  rethinkdb:
+    image: rethinkdb:2.4
+    container_name: pc-rethinkdb
+    ports:
+      - "28015:28015"
+      - "3333:8080"
+    volumes: 
+      - "rethinkdb-data:/data"
+
+volumes:
+  rethinkdb-data:
