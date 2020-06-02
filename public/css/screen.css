@@ -11,12 +11,13 @@
 }
 
 html {
+  height: 100%;
   font-family: "Inter var experimental", sans-serif;
 }
 
 body {
+  height: 100%;
   padding: 60px 0;
-  height: 100vh;
 }
 
 input, select {

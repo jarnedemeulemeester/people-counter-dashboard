@@ -1,6 +1,13 @@
 version: '3'
 
 services: 
+  web:
+    image: ml6/people-counter-dashboard
+    build: .
+    container_name: pc-dashboard
+    ports:
+      - "80:80"
+      
   rethinkdb:
     image: rethinkdb:2.4
     container_name: pc-rethinkdb
